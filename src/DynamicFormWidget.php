@@ -231,7 +231,7 @@ class DynamicFormWidget extends \yii\base\Widget
         $crawler->addHTMLContent($content, \Yii::$app->charset);
         $results = $crawler->filter($this->widgetItem);
         $document = new \DOMDocument('1.0', \Yii::$app->charset);
-        $document->appendChild($document->importNode($results->first()->getNode(0), true));
+        $document->appendChild($document->importNode($results->last()->getNode(0), true));
         $this->_options['template'] = trim($document->saveHTML());
 
         if (isset($this->_options['min']) && $this->_options['min'] === 0) {
