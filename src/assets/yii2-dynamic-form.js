@@ -207,7 +207,7 @@
                     });
 
                     widgetsOptions = widgetsOptions.reverse();
-                    for (var i = identifiers.length - 1; i >= 1; i--) {
+                    for (var i = widgetsOptions.length - 1; i >= 1; i--) {
                         identifiers[i] = $elem.closest(widgetsOptions[i].widgetItem).index();
                     }
                 }

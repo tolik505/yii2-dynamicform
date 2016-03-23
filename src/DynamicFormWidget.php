@@ -234,8 +234,8 @@ class DynamicFormWidget extends \yii\base\Widget
         $document->appendChild($document->importNode($results->first()->getNode(0), true));
         $this->_options['template'] = trim($document->saveHTML());
 
-        if (isset($this->_options['min']) && $this->_options['min'] === 0 && $this->model->isNewRecord) {
-            $content = $this->removeItems($content);
+        if (isset($this->_options['min']) && $this->_options['min'] === 0) {
+            $content = $this->removeLastItem($content);
         }
 
         $this->hashOptions();
@@ -252,11 +252,11 @@ class DynamicFormWidget extends \yii\base\Widget
     }
 
     /**
-     * Clear HTML widgetBody. Required to work with zero or more items.
+     * @param $content string
      *
-     * @param string $content
+     * @return string
      */
-    private function removeItems($content)
+    private function removeLastItem($content)
     {
         $document = new \DOMDocument('1.0', \Yii::$app->charset);
         $crawler = new Crawler();
@@ -265,9 +265,8 @@ class DynamicFormWidget extends \yii\base\Widget
         $crawler->rewind();
         $root->appendChild($document->importNode($crawler->current(), true));
         $domxpath = new \DOMXPath($document);
-        $crawlerInverse = $domxpath->query(CssSelector::toXPath($this->widgetItem));
-
-        foreach ($crawlerInverse as $elementToRemove) {
+        $crawlerInverse = $domxpath->query(CssSelector::toXPath($this->widgetItem . ':last-child'));
+        foreach ($crawlerInverse as $key => $elementToRemove) {
             $parent = $elementToRemove->parentNode;
             $parent->removeChild($elementToRemove);
         }
